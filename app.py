@@ -47,3 +47,12 @@ def replace_device(name: str, device: Device):
             readings[i] = device.model_dump()
             return readings[i]
     raise HTTPException(status_code=404, detail="No device called " + name)
+
+#TASK 2: endpoint to remove that device, or 404
+@app.delete("/devices/{name}")
+def delete_device(name: str):
+    for i, existing_device in enumerate(readings):
+        if existing_device["name"] == name:
+            del readings[i]
+            return {"deleted": name}
+    raise HTTPException(status_code=404, detail="No device called " + name)
